@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>API_DOCUMENTATION.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="instagram-api---complete-documentation">Instagram API - Complete Documentation</h1>
+<h2 id="1-base-url">1. Base URL</h2>
+<pre class="hljs"><code><div>https://instagram.f8team.dev/api
+</div></code></pre>
+<hr>
+<h2 id="2-response-success-example">2. Response Success Example</h2>
+<p>Tất cả response thành công đều có format:</p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Success message here"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-comment">// Response data object</span>
+  }
+}
+</div></code></pre>
+<p><strong>Status Codes:</strong></p>
+<ul>
+<li><code>200</code> - OK (GET requests)</li>
+<li><code>201</code> - Created (POST requests)</li>
+<li><code>204</code> - No Content (DELETE requests)</li>
+</ul>
+<hr>
+<h2 id="3-response-error-example">3. Response Error Example</h2>
+<p>Tất cả response lỗi đều có format:</p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Error message here"</span>
+}
+</div></code></pre>
+<p><strong>Common Error Status Codes:</strong></p>
+<ul>
+<li><code>400</code> - Bad Request (Invalid input)</li>
+<li><code>401</code> - Unauthorized (Missing or invalid token)</li>
+<li><code>403</code> - Forbidden (No permission)</li>
+<li><code>404</code> - Not Found (Resource not found)</li>
+<li><code>409</code> - Conflict (Duplicate resource)</li>
+<li><code>500</code> - Internal Server Error</li>
+</ul>
+<p><strong>Authentication Error Example:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Unauthorized - Token is required"</span>
+}
+</div></code></pre>
+<p><strong>Validation Error Example:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Email is required"</span>
+}
+</div></code></pre>
+<hr>
+<h2 id="4-api-endpoints">4. API Endpoints</h2>
+<h3 id="authentication">Authentication</h3>
+<h4 id="41-register">4.1. Register</h4>
+<p><strong>Mô tả:</strong> Đăng ký tài khoản mới</p>
+<p><strong>Endpoint:</strong> <code>POST /api/auth/register</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"user@example.com"</span>,
+  <span class="hljs-attr">"username"</span>: <span class="hljs-string">"johndoe"</span>,
+  <span class="hljs-attr">"password"</span>: <span class="hljs-string">"SecurePass123!"</span>,
+  <span class="hljs-attr">"confirmPassword"</span>: <span class="hljs-string">"SecurePass123!"</span>,
+  <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe"</span>
+}
+</div></code></pre>
+<p><strong>Response (201):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"User registered successfully. Please check your email to verify your account."</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"user"</span>: {
+      <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+      <span class="hljs-attr">"email"</span>: <span class="hljs-string">"user@example.com"</span>,
+      <span class="hljs-attr">"username"</span>: <span class="hljs-string">"johndoe"</span>,
+      <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe"</span>,
+      <span class="hljs-attr">"isVerified"</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:00:00Z"</span>
+    }
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl -X POST https://instagram.f8team.dev/api/api/auth/register \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "email": "user@example.com",
+    "username": "johndoe",
+    "password": "SecurePass123!",
+    "confirmPassword": "SecurePass123!",
+    "fullName": "John Doe"
+  }'</span>
+</div></code></pre>
+<hr>
+<h4 id="42-login">4.2. Login</h4>
+<p><strong>Mô tả:</strong> Đăng nhập vào hệ thống</p>
+<p><strong>Endpoint:</strong> <code>POST /api/auth/login</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"user@example.com"</span>,
+  <span class="hljs-attr">"password"</span>: <span class="hljs-string">"SecurePass123!"</span>
+}
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Login successful"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"user"</span>: {
+      <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+      <span class="hljs-attr">"email"</span>: <span class="hljs-string">"user@example.com"</span>,
+      <span class="hljs-attr">"username"</span>: <span class="hljs-string">"johndoe"</span>,
+      <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe"</span>,
+      <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>,
+      <span class="hljs-attr">"bio"</span>: <span class="hljs-string">"Photography enthusiast"</span>
+    },
+    <span class="hljs-attr">"accessToken"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>,
+    <span class="hljs-attr">"refreshToken"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl -X POST https://instagram.f8team.dev/api/api/auth/login \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "email": "user@example.com",
+    "password": "SecurePass123!"
+  }'</span>
+</div></code></pre>
+<hr>
+<h4 id="43-refresh-token">4.3. Refresh Token</h4>
+<p><strong>Mô tả:</strong> Làm mới access token khi hết hạn</p>
+<p><strong>Endpoint:</strong> <code>POST /api/auth/refresh-token</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"refreshToken"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+}
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Token refreshed successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"accessToken"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>,
+    <span class="hljs-attr">"refreshToken"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="44-logout">4.4. Logout</h4>
+<p><strong>Mô tả:</strong> Đăng xuất khỏi hệ thống</p>
+<p><strong>Endpoint:</strong> <code>POST /api/auth/logout</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"refreshToken"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+}
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Logout successful"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="45-verify-email">4.5. Verify Email</h4>
+<p><strong>Mô tả:</strong> Xác thực email sau khi đăng ký</p>
+<p><strong>Endpoint:</strong> <code>POST /api/auth/verify-email/:token</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>token</code> - Verification token từ email</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Email verified successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"user"</span>: {
+      <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+      <span class="hljs-attr">"email"</span>: <span class="hljs-string">"user@example.com"</span>,
+      <span class="hljs-attr">"username"</span>: <span class="hljs-string">"johndoe"</span>,
+      <span class="hljs-attr">"isVerified"</span>: <span class="hljs-literal">true</span>
+    }
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="46-resend-verification-email">4.6. Resend Verification Email</h4>
+<p><strong>Mô tả:</strong> Gửi lại email xác thực</p>
+<p><strong>Endpoint:</strong> <code>POST /api/auth/resend-verification-email</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"user@example.com"</span>
+}
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Verification email sent successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="47-forgot-password">4.7. Forgot Password</h4>
+<p><strong>Mô tả:</strong> Yêu cầu reset mật khẩu</p>
+<p><strong>Endpoint:</strong> <code>POST /api/auth/forgot-password</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"user@example.com"</span>
+}
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Password reset email sent successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="48-reset-password">4.8. Reset Password</h4>
+<p><strong>Mô tả:</strong> Đặt lại mật khẩu mới</p>
+<p><strong>Endpoint:</strong> <code>POST /api/auth/reset-password/:token</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>token</code> - Reset token từ email</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"password"</span>: <span class="hljs-string">"NewSecurePass123!"</span>,
+  <span class="hljs-attr">"confirmPassword"</span>: <span class="hljs-string">"NewSecurePass123!"</span>
+}
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Password reset successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="49-change-password">4.9. Change Password</h4>
+<p><strong>Mô tả:</strong> Đổi mật khẩu khi đã đăng nhập</p>
+<p><strong>Endpoint:</strong> <code>POST /api/auth/change-password</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"currentPassword"</span>: <span class="hljs-string">"OldPass123!"</span>,
+  <span class="hljs-attr">"newPassword"</span>: <span class="hljs-string">"NewPass123!"</span>,
+  <span class="hljs-attr">"confirmPassword"</span>: <span class="hljs-string">"NewPass123!"</span>
+}
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Password changed successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h3 id="user-management">User Management</h3>
+<h4 id="410-get-current-user-profile">4.10. Get Current User Profile</h4>
+<p><strong>Mô tả:</strong> Lấy thông tin profile của user hiện tại</p>
+<p><strong>Endpoint:</strong> <code>GET /api/users/profile</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Profile retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+    <span class="hljs-attr">"email"</span>: <span class="hljs-string">"user@example.com"</span>,
+    <span class="hljs-attr">"username"</span>: <span class="hljs-string">"johndoe"</span>,
+    <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe"</span>,
+    <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>,
+    <span class="hljs-attr">"bio"</span>: <span class="hljs-string">"Photography enthusiast"</span>,
+    <span class="hljs-attr">"website"</span>: <span class="hljs-string">"https://johndoe.com"</span>,
+    <span class="hljs-attr">"gender"</span>: <span class="hljs-string">"male"</span>,
+    <span class="hljs-attr">"isVerified"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-01T10:00:00Z"</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="411-update-profile">4.11. Update Profile</h4>
+<p><strong>Mô tả:</strong> Cập nhật thông tin profile</p>
+<p><strong>Endpoint:</strong> <code>PATCH /api/users/profile</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+Content-Type: multipart/form-data
+</div></code></pre>
+<p><strong>Request Body (multipart/form-data):</strong></p>
+<ul>
+<li><code>fullName</code> (string, optional)</li>
+<li><code>bio</code> (string, optional)</li>
+<li><code>website</code> (string, optional)</li>
+<li><code>gender</code> (string, optional): &quot;male&quot; | &quot;female&quot; | &quot;other&quot;</li>
+<li><code>profilePicture</code> (file, optional): Image file</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Profile updated successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+    <span class="hljs-attr">"username"</span>: <span class="hljs-string">"johndoe"</span>,
+    <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe Updated"</span>,
+    <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://.../new-avatar.jpg"</span>,
+    <span class="hljs-attr">"bio"</span>: <span class="hljs-string">"Updated bio"</span>,
+    <span class="hljs-attr">"website"</span>: <span class="hljs-string">"https://newwebsite.com"</span>
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl -X PATCH https://instagram.f8team.dev/api/api/users/profile \
+  -H <span class="hljs-string">"Authorization: Bearer YOUR_TOKEN"</span> \
+  -F <span class="hljs-string">"fullName=John Doe"</span> \
+  -F <span class="hljs-string">"bio=Photography enthusiast"</span> \
+  -F <span class="hljs-string">"profilePicture=@/path/to/image.jpg"</span>
+</div></code></pre>
+<hr>
+<h4 id="412-delete-profile-picture">4.12. Delete Profile Picture</h4>
+<p><strong>Mô tả:</strong> Xóa ảnh đại diện</p>
+<p><strong>Endpoint:</strong> <code>DELETE /api/users/profile/picture</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Profile picture deleted successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="413-get-user-by-id">4.13. Get User By ID</h4>
+<p><strong>Mô tả:</strong> Lấy thông tin user theo ID</p>
+<p><strong>Endpoint:</strong> <code>GET /api/users/:userId</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>userId</code> - ID của user</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt; (optional)
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"User found"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+    <span class="hljs-attr">"username"</span>: <span class="hljs-string">"johndoe"</span>,
+    <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe"</span>,
+    <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>,
+    <span class="hljs-attr">"bio"</span>: <span class="hljs-string">"Photography enthusiast"</span>,
+    <span class="hljs-attr">"website"</span>: <span class="hljs-string">"https://johndoe.com"</span>,
+    <span class="hljs-attr">"followersCount"</span>: <span class="hljs-number">1250</span>,
+    <span class="hljs-attr">"followingCount"</span>: <span class="hljs-number">380</span>,
+    <span class="hljs-attr">"isFollowing"</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">"postsCount"</span>: <span class="hljs-number">145</span>,
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-01T10:00:00Z"</span>
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl https://instagram.f8team.dev/api/api/users/507f1f77bcf86cd799439011
+</div></code></pre>
+<hr>
+<h4 id="414-search-users">4.14. Search Users</h4>
+<p><strong>Mô tả:</strong> Tìm kiếm users theo username, email, fullName hoặc caption trong posts</p>
+<p><strong>Endpoint:</strong> <code>GET /api/users/search</code></p>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>q</code> (required): Từ khóa tìm kiếm</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Users found"</span>,
+  <span class="hljs-attr">"data"</span>: [
+    {
+      <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+      <span class="hljs-attr">"username"</span>: <span class="hljs-string">"johndoe"</span>,
+      <span class="hljs-attr">"email"</span>: <span class="hljs-string">"john@example.com"</span>,
+      <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe"</span>,
+      <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>,
+      <span class="hljs-attr">"bio"</span>: <span class="hljs-string">"Travel photographer"</span>,
+      <span class="hljs-attr">"website"</span>: <span class="hljs-string">"https://johndoe.com"</span>
+    },
+    {
+      <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439012"</span>,
+      <span class="hljs-attr">"username"</span>: <span class="hljs-string">"travel_lover"</span>,
+      <span class="hljs-attr">"email"</span>: <span class="hljs-string">"travel@example.com"</span>,
+      <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"Travel Lover"</span>,
+      <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>,
+      <span class="hljs-attr">"bio"</span>: <span class="hljs-string">"Exploring the world 🌍"</span>
+    }
+  ]
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl <span class="hljs-string">"https://instagram.f8team.dev/api/api/users/search?q=travel"</span>
+</div></code></pre>
+<hr>
+<h4 id="415-get-suggested-users">4.15. Get Suggested Users</h4>
+<p><strong>Mô tả:</strong> Lấy danh sách users được gợi ý (chưa follow)</p>
+<p><strong>Endpoint:</strong> <code>GET /api/users/suggested</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>limit</code> (optional): Số users mỗi trang (default: 10)</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Suggested users retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: [
+    {
+      <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+      <span class="hljs-attr">"username"</span>: <span class="hljs-string">"johndoe"</span>,
+      <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe"</span>,
+      <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>,
+      <span class="hljs-attr">"bio"</span>: <span class="hljs-string">"Photography enthusiast"</span>,
+      <span class="hljs-attr">"postsCount"</span>: <span class="hljs-number">145</span>,
+      <span class="hljs-attr">"followersCount"</span>: <span class="hljs-number">1250</span>,
+      <span class="hljs-attr">"followingCount"</span>: <span class="hljs-number">380</span>,
+      <span class="hljs-attr">"isFollowing"</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">"recentImages"</span>: [
+        <span class="hljs-string">"https://.../post1.jpg"</span>,
+        <span class="hljs-string">"https://.../post2.jpg"</span>,
+        <span class="hljs-string">"https://.../post3.jpg"</span>
+      ]
+    }
+  ]
+}
+</div></code></pre>
+<hr>
+<h3 id="posts">Posts</h3>
+<h4 id="416-get-newsfeed">4.16. Get Newsfeed</h4>
+<p><strong>Mô tả:</strong> Lấy danh sách tất cả posts (newsfeed), sorted by newest</p>
+<p><strong>Endpoint:</strong> <code>GET /api/posts/feed</code></p>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>limit</code> (optional): Số posts mỗi trang (default: 20)</li>
+<li><code>offset</code> (optional): Pagination offset (default: 0)</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Newsfeed retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"posts"</span>: [
+      {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439012"</span>,
+        <span class="hljs-attr">"caption"</span>: <span class="hljs-string">"Beautiful sunset!"</span>,
+        <span class="hljs-attr">"image"</span>: <span class="hljs-string">"https://.../post.jpg"</span>,
+        <span class="hljs-attr">"video"</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">"mediaType"</span>: <span class="hljs-string">"image"</span>,
+        <span class="hljs-attr">"likes"</span>: <span class="hljs-number">245</span>,
+        <span class="hljs-attr">"comments"</span>: <span class="hljs-number">18</span>,
+        <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:00:00Z"</span>,
+        <span class="hljs-attr">"user"</span>: {
+          <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+          <span class="hljs-attr">"username"</span>: <span class="hljs-string">"johndoe"</span>,
+          <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe"</span>,
+          <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+        }
+      }
+    ],
+    <span class="hljs-attr">"pagination"</span>: {
+      <span class="hljs-attr">"currentPage"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"totalPages"</span>: <span class="hljs-number">10</span>,
+      <span class="hljs-attr">"totalPosts"</span>: <span class="hljs-number">200</span>,
+      <span class="hljs-attr">"hasMore"</span>: <span class="hljs-literal">true</span>
+    }
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl <span class="hljs-string">"https://instagram.f8team.dev/api/api/posts/feed?limit=20&amp;offset=0"</span>
+</div></code></pre>
+<hr>
+<h4 id="417-get-explore-posts">4.17. Get Explore Posts</h4>
+<p><strong>Mô tả:</strong> Lấy danh sách posts trending (engagement score cao)</p>
+<p><strong>Endpoint:</strong> <code>GET /api/posts/explore</code></p>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>page</code> (optional): Trang hiện tại (default: 1)</li>
+<li><code>limit</code> (optional): Số posts mỗi trang (default: 20)</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Explore posts retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"posts"</span>: [
+      {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439012"</span>,
+        <span class="hljs-attr">"caption"</span>: <span class="hljs-string">"Amazing sunset at the beach!"</span>,
+        <span class="hljs-attr">"image"</span>: <span class="hljs-string">"https://.../post.jpg"</span>,
+        <span class="hljs-attr">"video"</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">"mediaType"</span>: <span class="hljs-string">"image"</span>,
+        <span class="hljs-attr">"likes"</span>: <span class="hljs-number">150</span>,
+        <span class="hljs-attr">"comments"</span>: <span class="hljs-number">45</span>,
+        <span class="hljs-attr">"engagementScore"</span>: <span class="hljs-number">240</span>,
+        <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-10T15:30:00Z"</span>,
+        <span class="hljs-attr">"user"</span>: {
+          <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+          <span class="hljs-attr">"username"</span>: <span class="hljs-string">"travel_lover"</span>,
+          <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"Travel Lover"</span>,
+          <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+        }
+      }
+    ],
+    <span class="hljs-attr">"pagination"</span>: {
+      <span class="hljs-attr">"currentPage"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"totalPages"</span>: <span class="hljs-number">5</span>,
+      <span class="hljs-attr">"totalPosts"</span>: <span class="hljs-number">98</span>,
+      <span class="hljs-attr">"hasMore"</span>: <span class="hljs-literal">true</span>
+    }
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl <span class="hljs-string">"https://instagram.f8team.dev/api/api/posts/explore?page=1&amp;limit=20"</span>
+</div></code></pre>
+<hr>
+<h4 id="418-get-user-posts">4.18. Get User Posts</h4>
+<p><strong>Mô tả:</strong> Lấy danh sách posts của một user</p>
+<p><strong>Endpoint:</strong> <code>GET /api/posts/user/:userId</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>userId</code> - ID của user</li>
+</ul>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>filter</code> (optional): &quot;all&quot; | &quot;video&quot; | &quot;saved&quot; (default: &quot;all&quot;)</li>
+<li><code>limit</code> (optional): Số posts mỗi trang (default: 20)</li>
+<li><code>offset</code> (optional): Pagination offset (default: 0)</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt; (required for filter=saved)
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Posts retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"posts"</span>: [
+      {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439012"</span>,
+        <span class="hljs-attr">"caption"</span>: <span class="hljs-string">"My latest photo"</span>,
+        <span class="hljs-attr">"image"</span>: <span class="hljs-string">"https://.../post.jpg"</span>,
+        <span class="hljs-attr">"video"</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">"mediaType"</span>: <span class="hljs-string">"image"</span>,
+        <span class="hljs-attr">"likes"</span>: <span class="hljs-number">89</span>,
+        <span class="hljs-attr">"comments"</span>: <span class="hljs-number">12</span>,
+        <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:00:00Z"</span>
+      }
+    ],
+    <span class="hljs-attr">"pagination"</span>: {
+      <span class="hljs-attr">"currentPage"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"totalPages"</span>: <span class="hljs-number">5</span>,
+      <span class="hljs-attr">"totalPosts"</span>: <span class="hljs-number">95</span>,
+      <span class="hljs-attr">"hasMore"</span>: <span class="hljs-literal">true</span>
+    }
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Get all posts</span>
+curl <span class="hljs-string">"https://instagram.f8team.dev/api/api/posts/user/507f1f77bcf86cd799439011?filter=all"</span>
+
+<span class="hljs-comment"># Get only videos</span>
+curl <span class="hljs-string">"https://instagram.f8team.dev/api/api/posts/user/507f1f77bcf86cd799439011?filter=video"</span>
+
+<span class="hljs-comment"># Get saved posts (requires auth)</span>
+curl <span class="hljs-string">"https://instagram.f8team.dev/api/api/posts/user/507f1f77bcf86cd799439011?filter=saved"</span> \
+  -H <span class="hljs-string">"Authorization: Bearer YOUR_TOKEN"</span>
+</div></code></pre>
+<hr>
+<h4 id="419-get-user-post-stats">4.19. Get User Post Stats</h4>
+<p><strong>Mô tả:</strong> Lấy thống kê posts của user</p>
+<p><strong>Endpoint:</strong> <code>GET /api/posts/user/:userId/stats</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>userId</code> - ID của user</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Post statistics retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"totalPosts"</span>: <span class="hljs-number">95</span>,
+    <span class="hljs-attr">"totalLikes"</span>: <span class="hljs-number">4523</span>,
+    <span class="hljs-attr">"totalComments"</span>: <span class="hljs-number">876</span>,
+    <span class="hljs-attr">"totalVideos"</span>: <span class="hljs-number">12</span>,
+    <span class="hljs-attr">"totalImages"</span>: <span class="hljs-number">83</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="420-get-post-details">4.20. Get Post Details</h4>
+<p><strong>Mô tả:</strong> Lấy chi tiết một post (bao gồm comments)</p>
+<p><strong>Endpoint:</strong> <code>GET /api/posts/:postId</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Post details retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439012"</span>,
+    <span class="hljs-attr">"caption"</span>: <span class="hljs-string">"Beautiful sunset!"</span>,
+    <span class="hljs-attr">"image"</span>: <span class="hljs-string">"https://.../post.jpg"</span>,
+    <span class="hljs-attr">"video"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"mediaType"</span>: <span class="hljs-string">"image"</span>,
+    <span class="hljs-attr">"likes"</span>: <span class="hljs-number">245</span>,
+    <span class="hljs-attr">"comments"</span>: <span class="hljs-number">18</span>,
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:00:00Z"</span>,
+    <span class="hljs-attr">"user"</span>: {
+      <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+      <span class="hljs-attr">"username"</span>: <span class="hljs-string">"johndoe"</span>,
+      <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe"</span>,
+      <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+    }
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl https://instagram.f8team.dev/api/api/posts/607f1f77bcf86cd799439012
+</div></code></pre>
+<hr>
+<h4 id="421-create-post">4.21. Create Post</h4>
+<p><strong>Mô tả:</strong> Tạo post mới với ảnh hoặc video</p>
+<p><strong>Endpoint:</strong> <code>POST /api/posts</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+Content-Type: multipart/form-data
+</div></code></pre>
+<p><strong>Request Body (multipart/form-data):</strong></p>
+<ul>
+<li><code>file</code> (file, required): Image or video file</li>
+<li><code>caption</code> (string, optional): Post caption</li>
+</ul>
+<p><strong>Response (201):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Post created successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439012"</span>,
+    <span class="hljs-attr">"userId"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+    <span class="hljs-attr">"caption"</span>: <span class="hljs-string">"Beautiful day!"</span>,
+    <span class="hljs-attr">"image"</span>: <span class="hljs-string">"https://.../post.jpg"</span>,
+    <span class="hljs-attr">"video"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"mediaType"</span>: <span class="hljs-string">"image"</span>,
+    <span class="hljs-attr">"likes"</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">"comments"</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:00:00Z"</span>
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl -X POST https://instagram.f8team.dev/api/api/posts \
+  -H <span class="hljs-string">"Authorization: Bearer YOUR_TOKEN"</span> \
+  -F <span class="hljs-string">"file=@/path/to/image.jpg"</span> \
+  -F <span class="hljs-string">"caption=Beautiful day!"</span>
+</div></code></pre>
+<hr>
+<h4 id="422-update-post">4.22. Update Post</h4>
+<p><strong>Mô tả:</strong> Cập nhật caption của post</p>
+<p><strong>Endpoint:</strong> <code>PATCH /api/posts/:postId</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"caption"</span>: <span class="hljs-string">"Updated caption"</span>
+}
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Post updated successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439012"</span>,
+    <span class="hljs-attr">"caption"</span>: <span class="hljs-string">"Updated caption"</span>,
+    <span class="hljs-attr">"image"</span>: <span class="hljs-string">"https://.../post.jpg"</span>,
+    <span class="hljs-attr">"updatedAt"</span>: <span class="hljs-string">"2026-01-14T11:00:00Z"</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="423-delete-post">4.23. Delete Post</h4>
+<p><strong>Mô tả:</strong> Xóa post</p>
+<p><strong>Endpoint:</strong> <code>DELETE /api/posts/:postId</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Post deleted successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="424-like-post">4.24. Like Post</h4>
+<p><strong>Mô tả:</strong> Like một post</p>
+<p><strong>Endpoint:</strong> <code>POST /api/posts/:postId/like</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Post liked successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439012"</span>,
+    <span class="hljs-attr">"likes"</span>: <span class="hljs-number">246</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="425-unlike-post">4.25. Unlike Post</h4>
+<p><strong>Mô tả:</strong> Unlike một post</p>
+<p><strong>Endpoint:</strong> <code>DELETE /api/posts/:postId/like</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Post unliked successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439012"</span>,
+    <span class="hljs-attr">"likes"</span>: <span class="hljs-number">245</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="426-save-post">4.26. Save Post</h4>
+<p><strong>Mô tả:</strong> Lưu post vào collection</p>
+<p><strong>Endpoint:</strong> <code>POST /api/posts/:postId/save</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Post saved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="427-unsave-post">4.27. Unsave Post</h4>
+<p><strong>Mô tả:</strong> Bỏ lưu post</p>
+<p><strong>Endpoint:</strong> <code>DELETE /api/posts/:postId/save</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Post unsaved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h3 id="comments">Comments</h3>
+<h4 id="428-get-post-comments">4.28. Get Post Comments</h4>
+<p><strong>Mô tả:</strong> Lấy danh sách comments của một post</p>
+<p><strong>Endpoint:</strong> <code>GET /api/posts/:postId/comments</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+</ul>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>limit</code> (optional): Số comments mỗi trang (default: 20)</li>
+<li><code>offset</code> (optional): Pagination offset (default: 0)</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Comments retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"comments"</span>: [
+      {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439020"</span>,
+        <span class="hljs-attr">"postId"</span>: <span class="hljs-string">"607f1f77bcf86cd799439012"</span>,
+        <span class="hljs-attr">"userId"</span>: {
+          <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439012"</span>,
+          <span class="hljs-attr">"username"</span>: <span class="hljs-string">"jane_smith"</span>,
+          <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+        },
+        <span class="hljs-attr">"content"</span>: <span class="hljs-string">"Amazing photo!"</span>,
+        <span class="hljs-attr">"parentCommentId"</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">"likes"</span>: <span class="hljs-number">12</span>,
+        <span class="hljs-attr">"repliesCount"</span>: <span class="hljs-number">3</span>,
+        <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:05:00Z"</span>
+      }
+    ],
+    <span class="hljs-attr">"pagination"</span>: {
+      <span class="hljs-attr">"currentPage"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"totalPages"</span>: <span class="hljs-number">2</span>,
+      <span class="hljs-attr">"totalComments"</span>: <span class="hljs-number">35</span>,
+      <span class="hljs-attr">"hasMore"</span>: <span class="hljs-literal">true</span>
+    }
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl <span class="hljs-string">"https://instagram.f8team.dev/api/api/posts/607f1f77bcf86cd799439012/comments?limit=20"</span>
+</div></code></pre>
+<hr>
+<h4 id="429-create-comment">4.29. Create Comment</h4>
+<p><strong>Mô tả:</strong> Tạo comment mới trên post</p>
+<p><strong>Endpoint:</strong> <code>POST /api/posts/:postId/comments</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"content"</span>: <span class="hljs-string">"Amazing photo!"</span>,
+  <span class="hljs-attr">"parentCommentId"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<p><strong>Response (201):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Comment created successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439020"</span>,
+    <span class="hljs-attr">"postId"</span>: <span class="hljs-string">"607f1f77bcf86cd799439012"</span>,
+    <span class="hljs-attr">"userId"</span>: {
+      <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439012"</span>,
+      <span class="hljs-attr">"username"</span>: <span class="hljs-string">"jane_smith"</span>,
+      <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+    },
+    <span class="hljs-attr">"content"</span>: <span class="hljs-string">"Amazing photo!"</span>,
+    <span class="hljs-attr">"parentCommentId"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"likes"</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:05:00Z"</span>
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl -X POST https://instagram.f8team.dev/api/api/posts/607f1f77bcf86cd799439012/comments \
+  -H <span class="hljs-string">"Authorization: Bearer YOUR_TOKEN"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{"content": "Amazing photo!"}'</span>
+</div></code></pre>
+<hr>
+<h4 id="430-get-comment-replies">4.30. Get Comment Replies</h4>
+<p><strong>Mô tả:</strong> Lấy danh sách replies của một comment</p>
+<p><strong>Endpoint:</strong> <code>GET /api/posts/:postId/comments/:commentId/replies</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+<li><code>commentId</code> - ID của comment</li>
+</ul>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>limit</code> (optional): Số replies mỗi trang (default: 10)</li>
+<li><code>offset</code> (optional): Pagination offset (default: 0)</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Replies retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"replies"</span>: [
+      {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439021"</span>,
+        <span class="hljs-attr">"postId"</span>: <span class="hljs-string">"607f1f77bcf86cd799439012"</span>,
+        <span class="hljs-attr">"userId"</span>: {
+          <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439013"</span>,
+          <span class="hljs-attr">"username"</span>: <span class="hljs-string">"alex_park"</span>,
+          <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+        },
+        <span class="hljs-attr">"content"</span>: <span class="hljs-string">"I agree!"</span>,
+        <span class="hljs-attr">"parentCommentId"</span>: <span class="hljs-string">"607f1f77bcf86cd799439020"</span>,
+        <span class="hljs-attr">"likes"</span>: <span class="hljs-number">5</span>,
+        <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:10:00Z"</span>
+      }
+    ],
+    <span class="hljs-attr">"pagination"</span>: {
+      <span class="hljs-attr">"currentPage"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"totalPages"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"totalReplies"</span>: <span class="hljs-number">3</span>,
+      <span class="hljs-attr">"hasMore"</span>: <span class="hljs-literal">false</span>
+    }
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="431-create-reply">4.31. Create Reply</h4>
+<p><strong>Mô tả:</strong> Tạo reply cho một comment</p>
+<p><strong>Endpoint:</strong> <code>POST /api/posts/:postId/comments/:commentId/replies</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+<li><code>commentId</code> - ID của comment cha</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"content"</span>: <span class="hljs-string">"I agree!"</span>
+}
+</div></code></pre>
+<p><strong>Response (201):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Reply created successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439021"</span>,
+    <span class="hljs-attr">"postId"</span>: <span class="hljs-string">"607f1f77bcf86cd799439012"</span>,
+    <span class="hljs-attr">"userId"</span>: {
+      <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439013"</span>,
+      <span class="hljs-attr">"username"</span>: <span class="hljs-string">"alex_park"</span>,
+      <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+    },
+    <span class="hljs-attr">"content"</span>: <span class="hljs-string">"I agree!"</span>,
+    <span class="hljs-attr">"parentCommentId"</span>: <span class="hljs-string">"607f1f77bcf86cd799439020"</span>,
+    <span class="hljs-attr">"likes"</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:10:00Z"</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="432-update-comment">4.32. Update Comment</h4>
+<p><strong>Mô tả:</strong> Cập nhật nội dung comment</p>
+<p><strong>Endpoint:</strong> <code>PATCH /api/posts/:postId/comments/:commentId</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+<li><code>commentId</code> - ID của comment</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"content"</span>: <span class="hljs-string">"Updated comment content"</span>
+}
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Comment updated successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439020"</span>,
+    <span class="hljs-attr">"content"</span>: <span class="hljs-string">"Updated comment content"</span>,
+    <span class="hljs-attr">"updatedAt"</span>: <span class="hljs-string">"2026-01-14T11:00:00Z"</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="433-delete-comment">4.33. Delete Comment</h4>
+<p><strong>Mô tả:</strong> Xóa comment</p>
+<p><strong>Endpoint:</strong> <code>DELETE /api/posts/:postId/comments/:commentId</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+<li><code>commentId</code> - ID của comment</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Comment deleted successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="434-like-comment">4.34. Like Comment</h4>
+<p><strong>Mô tả:</strong> Like một comment</p>
+<p><strong>Endpoint:</strong> <code>POST /api/posts/:postId/comments/:commentId/like</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+<li><code>commentId</code> - ID của comment</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Comment liked successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439020"</span>,
+    <span class="hljs-attr">"likes"</span>: <span class="hljs-number">13</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="435-unlike-comment">4.35. Unlike Comment</h4>
+<p><strong>Mô tả:</strong> Unlike một comment</p>
+<p><strong>Endpoint:</strong> <code>DELETE /api/posts/:postId/comments/:commentId/like</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>postId</code> - ID của post</li>
+<li><code>commentId</code> - ID của comment</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Comment unliked successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439020"</span>,
+    <span class="hljs-attr">"likes"</span>: <span class="hljs-number">12</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h3 id="follow-system">Follow System</h3>
+<h4 id="436-follow-user">4.36. Follow User</h4>
+<p><strong>Mô tả:</strong> Follow một user</p>
+<p><strong>Endpoint:</strong> <code>POST /api/follow/:userId/follow</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>userId</code> - ID của user muốn follow</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"User followed successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl -X POST https://instagram.f8team.dev/api/api/follow/507f1f77bcf86cd799439011/follow \
+  -H <span class="hljs-string">"Authorization: Bearer YOUR_TOKEN"</span>
+</div></code></pre>
+<hr>
+<h4 id="437-unfollow-user">4.37. Unfollow User</h4>
+<p><strong>Mô tả:</strong> Unfollow một user</p>
+<p><strong>Endpoint:</strong> <code>DELETE /api/follow/:userId/follow</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>userId</code> - ID của user muốn unfollow</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"User unfollowed successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="438-get-followers">4.38. Get Followers</h4>
+<p><strong>Mô tả:</strong> Lấy danh sách followers của một user</p>
+<p><strong>Endpoint:</strong> <code>GET /api/follow/:userId/followers</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>userId</code> - ID của user</li>
+</ul>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>page</code> (optional): Trang hiện tại (default: 1)</li>
+<li><code>limit</code> (optional): Số users mỗi trang (default: 20)</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Followers retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"followers"</span>: [
+      {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439012"</span>,
+        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"jane_smith"</span>,
+        <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"Jane Smith"</span>,
+        <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>,
+        <span class="hljs-attr">"bio"</span>: <span class="hljs-string">"Travel lover 🌍"</span>
+      }
+    ],
+    <span class="hljs-attr">"pagination"</span>: {
+      <span class="hljs-attr">"currentPage"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"totalPages"</span>: <span class="hljs-number">10</span>,
+      <span class="hljs-attr">"totalFollowers"</span>: <span class="hljs-number">195</span>,
+      <span class="hljs-attr">"hasMore"</span>: <span class="hljs-literal">true</span>
+    }
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl <span class="hljs-string">"https://instagram.f8team.dev/api/api/follow/507f1f77bcf86cd799439011/followers?page=1&amp;limit=20"</span>
+</div></code></pre>
+<hr>
+<h4 id="439-get-following">4.39. Get Following</h4>
+<p><strong>Mô tả:</strong> Lấy danh sách users mà user này đang follow</p>
+<p><strong>Endpoint:</strong> <code>GET /api/follow/:userId/following</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>userId</code> - ID của user</li>
+</ul>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>page</code> (optional): Trang hiện tại (default: 1)</li>
+<li><code>limit</code> (optional): Số users mỗi trang (default: 20)</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Following retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"following"</span>: [
+      {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439013"</span>,
+        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"alex_park"</span>,
+        <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"Alex Park"</span>,
+        <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>,
+        <span class="hljs-attr">"bio"</span>: <span class="hljs-string">"Photography enthusiast"</span>
+      }
+    ],
+    <span class="hljs-attr">"pagination"</span>: {
+      <span class="hljs-attr">"currentPage"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"totalPages"</span>: <span class="hljs-number">5</span>,
+      <span class="hljs-attr">"totalFollowing"</span>: <span class="hljs-number">87</span>,
+      <span class="hljs-attr">"hasMore"</span>: <span class="hljs-literal">true</span>
+    }
+  }
+}
+</div></code></pre>
+<hr>
+<h3 id="search-history">Search History</h3>
+<h4 id="440-add-search-history">4.40. Add Search History</h4>
+<p><strong>Mô tả:</strong> Lưu lại lịch sử tìm kiếm khi user click vào kết quả</p>
+<p><strong>Endpoint:</strong> <code>POST /api/search-history</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"searchedUserId"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+  <span class="hljs-attr">"searchQuery"</span>: <span class="hljs-string">"travel"</span>
+}
+</div></code></pre>
+<p><strong>Response (201):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Search history saved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439030"</span>,
+    <span class="hljs-attr">"userId"</span>: <span class="hljs-string">"507f1f77bcf86cd799439012"</span>,
+    <span class="hljs-attr">"searchedUserId"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+    <span class="hljs-attr">"searchQuery"</span>: <span class="hljs-string">"travel"</span>,
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:00:00Z"</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="441-get-search-history">4.41. Get Search History</h4>
+<p><strong>Mô tả:</strong> Lấy lịch sử tìm kiếm của user</p>
+<p><strong>Endpoint:</strong> <code>GET /api/search-history</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>limit</code> (optional): Số items mỗi trang (default: 20)</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Search history retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: [
+    {
+      <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"607f1f77bcf86cd799439030"</span>,
+      <span class="hljs-attr">"searchQuery"</span>: <span class="hljs-string">"travel"</span>,
+      <span class="hljs-attr">"searchedUser"</span>: {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"travel_lover"</span>,
+        <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"Travel Lover"</span>,
+        <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+      },
+      <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:00:00Z"</span>
+    }
+  ]
+}
+</div></code></pre>
+<hr>
+<h4 id="442-delete-search-history-item">4.42. Delete Search History Item</h4>
+<p><strong>Mô tả:</strong> Xóa một item trong lịch sử tìm kiếm</p>
+<p><strong>Endpoint:</strong> <code>DELETE /api/search-history/:historyId</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>historyId</code> - ID của search history item</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Search history deleted successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="443-clear-all-search-history">4.43. Clear All Search History</h4>
+<p><strong>Mô tả:</strong> Xóa toàn bộ lịch sử tìm kiếm</p>
+<p><strong>Endpoint:</strong> <code>DELETE /api/search-history</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"All search history cleared successfully"</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<hr>
+<h3 id="direct-messages-chat">Direct Messages (Chat)</h3>
+<h4 id="444-get-conversations">4.44. Get Conversations</h4>
+<p><strong>Mô tả:</strong> Lấy danh sách các cuộc hội thoại của user</p>
+<p><strong>Endpoint:</strong> <code>GET /api/messages/conversations</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>page</code> (optional): Trang hiện tại (default: 1)</li>
+<li><code>limit</code> (optional): Số conversations mỗi trang (default: 20)</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Conversations retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"conversations"</span>: [
+      {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"conv_id_1"</span>,
+        <span class="hljs-attr">"participants"</span>: [
+          {
+            <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"user1_id"</span>,
+            <span class="hljs-attr">"username"</span>: <span class="hljs-string">"john_doe"</span>,
+            <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe"</span>,
+            <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+          },
+          {
+            <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"user2_id"</span>,
+            <span class="hljs-attr">"username"</span>: <span class="hljs-string">"jane_smith"</span>,
+            <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"Jane Smith"</span>,
+            <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+          }
+        ],
+        <span class="hljs-attr">"lastMessage"</span>: {
+          <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"msg_id"</span>,
+          <span class="hljs-attr">"messageType"</span>: <span class="hljs-string">"text"</span>,
+          <span class="hljs-attr">"content"</span>: <span class="hljs-string">"Hey, how are you?"</span>,
+          <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:30:00Z"</span>,
+          <span class="hljs-attr">"senderId"</span>: <span class="hljs-string">"user1_id"</span>,
+          <span class="hljs-attr">"isRead"</span>: <span class="hljs-literal">false</span>
+        },
+        <span class="hljs-attr">"lastMessageAt"</span>: <span class="hljs-string">"2026-01-14T10:30:00Z"</span>,
+        <span class="hljs-attr">"unreadCount"</span>: <span class="hljs-number">3</span>,
+        <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-10T08:00:00Z"</span>
+      }
+    ],
+    <span class="hljs-attr">"pagination"</span>: {
+      <span class="hljs-attr">"currentPage"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"totalPages"</span>: <span class="hljs-number">3</span>,
+      <span class="hljs-attr">"totalConversations"</span>: <span class="hljs-number">45</span>,
+      <span class="hljs-attr">"hasMore"</span>: <span class="hljs-literal">true</span>
+    }
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="445-create-or-get-conversation">4.45. Create or Get Conversation</h4>
+<p><strong>Mô tả:</strong> Tạo conversation mới hoặc lấy conversation hiện có với một user</p>
+<p><strong>Endpoint:</strong> <code>POST /api/messages/conversations</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"userId"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>
+}
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Conversation retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"conv_id"</span>,
+    <span class="hljs-attr">"participants"</span>: [
+      {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"user1_id"</span>,
+        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"john_doe"</span>,
+        <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe"</span>,
+        <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+      },
+      {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"user2_id"</span>,
+        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"jane_smith"</span>,
+        <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"Jane Smith"</span>,
+        <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+      }
+    ],
+    <span class="hljs-attr">"lastMessage"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"lastMessageAt"</span>: <span class="hljs-string">"2026-01-14T10:00:00Z"</span>,
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:00:00Z"</span>
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl -X POST https://instagram.f8team.dev/api/api/messages/conversations \
+  -H <span class="hljs-string">"Authorization: Bearer YOUR_TOKEN"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{"userId": "507f1f77bcf86cd799439011"}'</span>
+</div></code></pre>
+<hr>
+<h4 id="446-get-messages-in-conversation">4.46. Get Messages in Conversation</h4>
+<p><strong>Mô tả:</strong> Lấy tất cả messages trong một conversation (tự động mark as read)</p>
+<p><strong>Endpoint:</strong> <code>GET /api/messages/conversations/:conversationId/messages</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>conversationId</code> - ID của conversation</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>page</code> (optional): Trang hiện tại (default: 1)</li>
+<li><code>limit</code> (optional): Số messages mỗi trang (default: 50)</li>
+</ul>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Messages retrieved successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"messages"</span>: [
+      {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"msg_id_1"</span>,
+        <span class="hljs-attr">"conversationId"</span>: <span class="hljs-string">"conv_id"</span>,
+        <span class="hljs-attr">"senderId"</span>: {
+          <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"user1_id"</span>,
+          <span class="hljs-attr">"username"</span>: <span class="hljs-string">"john_doe"</span>,
+          <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"John Doe"</span>,
+          <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+        },
+        <span class="hljs-attr">"recipientId"</span>: <span class="hljs-string">"user2_id"</span>,
+        <span class="hljs-attr">"messageType"</span>: <span class="hljs-string">"text"</span>,
+        <span class="hljs-attr">"content"</span>: <span class="hljs-string">"Hello!"</span>,
+        <span class="hljs-attr">"isRead"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T09:00:00Z"</span>
+      },
+      {
+        <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"msg_id_2"</span>,
+        <span class="hljs-attr">"conversationId"</span>: <span class="hljs-string">"conv_id"</span>,
+        <span class="hljs-attr">"senderId"</span>: {
+          <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"user2_id"</span>,
+          <span class="hljs-attr">"username"</span>: <span class="hljs-string">"jane_smith"</span>,
+          <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"Jane Smith"</span>,
+          <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+        },
+        <span class="hljs-attr">"recipientId"</span>: <span class="hljs-string">"user1_id"</span>,
+        <span class="hljs-attr">"messageType"</span>: <span class="hljs-string">"image"</span>,
+        <span class="hljs-attr">"imageUrl"</span>: <span class="hljs-string">"https://.../image.jpg"</span>,
+        <span class="hljs-attr">"isRead"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T09:05:00Z"</span>
+      }
+    ],
+    <span class="hljs-attr">"pagination"</span>: {
+      <span class="hljs-attr">"currentPage"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"totalPages"</span>: <span class="hljs-number">5</span>,
+      <span class="hljs-attr">"totalMessages"</span>: <span class="hljs-number">234</span>,
+      <span class="hljs-attr">"hasMore"</span>: <span class="hljs-literal">true</span>
+    }
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="447-send-text-message">4.47. Send Text Message</h4>
+<p><strong>Mô tả:</strong> Gửi tin nhắn văn bản</p>
+<p><strong>Endpoint:</strong> <code>POST /api/messages/messages</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+Content-Type: application/json
+</div></code></pre>
+<p><strong>Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"conversationId"</span>: <span class="hljs-string">"conv_id"</span>,
+  <span class="hljs-attr">"recipientId"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+  <span class="hljs-attr">"messageType"</span>: <span class="hljs-string">"text"</span>,
+  <span class="hljs-attr">"content"</span>: <span class="hljs-string">"Hello! How are you?"</span>
+}
+</div></code></pre>
+<p><strong>Response (201):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Message sent successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"msg_id"</span>,
+    <span class="hljs-attr">"conversationId"</span>: <span class="hljs-string">"conv_id"</span>,
+    <span class="hljs-attr">"senderId"</span>: {
+      <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"user2_id"</span>,
+      <span class="hljs-attr">"username"</span>: <span class="hljs-string">"jane_smith"</span>,
+      <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"Jane Smith"</span>,
+      <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+    },
+    <span class="hljs-attr">"recipientId"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+    <span class="hljs-attr">"messageType"</span>: <span class="hljs-string">"text"</span>,
+    <span class="hljs-attr">"content"</span>: <span class="hljs-string">"Hello! How are you?"</span>,
+    <span class="hljs-attr">"isRead"</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:30:00Z"</span>
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl -X POST https://instagram.f8team.dev/api/api/messages/messages \
+  -H <span class="hljs-string">"Authorization: Bearer YOUR_TOKEN"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "conversationId": "conv_id",
+    "recipientId": "507f1f77bcf86cd799439011",
+    "messageType": "text",
+    "content": "Hello!"
+  }'</span>
+</div></code></pre>
+<hr>
+<h4 id="448-send-image-message">4.48. Send Image Message</h4>
+<p><strong>Mô tả:</strong> Gửi tin nhắn ảnh</p>
+<p><strong>Endpoint:</strong> <code>POST /api/messages/messages</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+Content-Type: multipart/form-data
+</div></code></pre>
+<p><strong>Request Body (multipart/form-data):</strong></p>
+<ul>
+<li><code>conversationId</code> (string): ID của conversation</li>
+<li><code>recipientId</code> (string): ID của người nhận</li>
+<li><code>messageType</code> (string): &quot;image&quot;</li>
+<li><code>image</code> (file): Image file</li>
+</ul>
+<p><strong>Response (201):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Message sent successfully"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"msg_id"</span>,
+    <span class="hljs-attr">"conversationId"</span>: <span class="hljs-string">"conv_id"</span>,
+    <span class="hljs-attr">"senderId"</span>: {
+      <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"user2_id"</span>,
+      <span class="hljs-attr">"username"</span>: <span class="hljs-string">"jane_smith"</span>,
+      <span class="hljs-attr">"fullName"</span>: <span class="hljs-string">"Jane Smith"</span>,
+      <span class="hljs-attr">"profilePicture"</span>: <span class="hljs-string">"https://..."</span>
+    },
+    <span class="hljs-attr">"recipientId"</span>: <span class="hljs-string">"507f1f77bcf86cd799439011"</span>,
+    <span class="hljs-attr">"messageType"</span>: <span class="hljs-string">"image"</span>,
+    <span class="hljs-attr">"imageUrl"</span>: <span class="hljs-string">"https://.../uploads/image.jpg"</span>,
+    <span class="hljs-attr">"isRead"</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-01-14T10:35:00Z"</span>
+  }
+}
+</div></code></pre>
+<p><strong>Ví dụ:</strong></p>
+<pre class="hljs"><code><div>curl -X POST https://instagram.f8team.dev/api/api/messages/messages \
+  -H <span class="hljs-string">"Authorization: Bearer YOUR_TOKEN"</span> \
+  -F <span class="hljs-string">"conversationId=conv_id"</span> \
+  -F <span class="hljs-string">"recipientId=507f1f77bcf86cd799439011"</span> \
+  -F <span class="hljs-string">"messageType=image"</span> \
+  -F <span class="hljs-string">"image=@/path/to/image.jpg"</span>
+</div></code></pre>
+<hr>
+<h4 id="449-mark-message-as-read">4.49. Mark Message as Read</h4>
+<p><strong>Mô tả:</strong> Đánh dấu tin nhắn là đã đọc</p>
+<p><strong>Endpoint:</strong> <code>PUT /api/messages/messages/:messageId/read</code></p>
+<p><strong>URL Parameters:</strong></p>
+<ul>
+<li><code>messageId</code> - ID của message</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Message marked as read"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"msg_id"</span>,
+    <span class="hljs-attr">"isRead"</span>: <span class="hljs-literal">true</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h4 id="450-get-unread-count">4.50. Get Unread Count</h4>
+<p><strong>Mô tả:</strong> Lấy tổng số tin nhắn chưa đọc</p>
+<p><strong>Endpoint:</strong> <code>GET /api/messages/unread-count</code></p>
+<p><strong>Headers:</strong></p>
+<pre class="hljs"><code><div>Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<p><strong>Response (200):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Unread count retrieved"</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"unreadCount"</span>: <span class="hljs-number">15</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h2 id="socketio-realtime-events">Socket.IO Realtime Events</h2>
+<h3 id="connection-setup">Connection Setup</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> io <span class="hljs-keyword">from</span> <span class="hljs-string">"socket.io-client"</span>;
+
+<span class="hljs-keyword">const</span> socket = io(<span class="hljs-string">"https://instagram.f8team.dev/api"</span>, {
+  <span class="hljs-attr">auth</span>: {
+    <span class="hljs-attr">token</span>: yourJWTToken,
+  },
+});
+
+socket.on(<span class="hljs-string">"connect"</span>, () =&gt; {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Connected to chat server"</span>);
+});
+</div></code></pre>
+<h3 id="events">Events</h3>
+<h4 id="receive-new-message">Receive New Message</h4>
+<pre class="hljs"><code><div>socket.on(<span class="hljs-string">"new_message"</span>, (message) =&gt; {
+  <span class="hljs-comment">// message object with all fields</span>
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"New message:"</span>, message);
+});
+</div></code></pre>
+<h4 id="typing-indicator">Typing Indicator</h4>
+<pre class="hljs"><code><div><span class="hljs-comment">// Send typing</span>
+socket.emit(<span class="hljs-string">"typing"</span>, {
+  <span class="hljs-attr">conversationId</span>: <span class="hljs-string">"conv_id"</span>,
+  <span class="hljs-attr">recipientId</span>: <span class="hljs-string">"user_id"</span>,
+});
+
+<span class="hljs-comment">// Send stop typing</span>
+socket.emit(<span class="hljs-string">"stop_typing"</span>, {
+  <span class="hljs-attr">conversationId</span>: <span class="hljs-string">"conv_id"</span>,
+  <span class="hljs-attr">recipientId</span>: <span class="hljs-string">"user_id"</span>,
+});
+
+<span class="hljs-comment">// Receive typing</span>
+socket.on(<span class="hljs-string">"user_typing"</span>, ({ conversationId, userId }) =&gt; {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"User is typing..."</span>);
+});
+
+<span class="hljs-comment">// Receive stop typing</span>
+socket.on(<span class="hljs-string">"user_stop_typing"</span>, ({ conversationId, userId }) =&gt; {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"User stopped typing"</span>);
+});
+</div></code></pre>
+<hr>
+<h2 id="authentication-flow">Authentication Flow</h2>
+<h3 id="1-register-%E2%86%92-verify-email-%E2%86%92-login">1. Register → Verify Email → Login</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># Step 1: Register</span>
+POST /api/auth/register
+<span class="hljs-comment"># User receives email with verification link</span>
+
+<span class="hljs-comment"># Step 2: Verify Email</span>
+POST /api/auth/verify-email/:token
+<span class="hljs-comment"># Account activated</span>
+
+<span class="hljs-comment"># Step 3: Login</span>
+POST /api/auth/login
+<span class="hljs-comment"># Receive access token and refresh token</span>
+</div></code></pre>
+<h3 id="2-using-access-token">2. Using Access Token</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># Include in Authorization header for all protected endpoints</span>
+Authorization: Bearer &lt;access_token&gt;
+</div></code></pre>
+<h3 id="3-refresh-token-when-expired">3. Refresh Token When Expired</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># When access token expires (401 error)</span>
+POST /api/auth/refresh-token
+Body: { <span class="hljs-string">"refreshToken"</span>: <span class="hljs-string">"..."</span> }
+<span class="hljs-comment"># Receive new access token and refresh token</span>
+</div></code></pre>
+<hr>
+<h2 id="file-upload-endpoints">File Upload Endpoints</h2>
+<h3 id="endpoints-supporting-file-upload">Endpoints supporting file upload:</h3>
+<ol>
+<li>
+<p><strong>Update Profile</strong> - <code>PATCH /api/users/profile</code></p>
+<ul>
+<li>Field name: <code>profilePicture</code></li>
+<li>Accepts: Image files (jpg, jpeg, png, gif)</li>
+<li>Max size: 5MB</li>
+</ul>
+</li>
+<li>
+<p><strong>Create Post</strong> - <code>POST /api/posts</code></p>
+<ul>
+<li>Field name: <code>file</code></li>
+<li>Accepts: Image or video files</li>
+<li>Max size: 50MB</li>
+</ul>
+</li>
+<li>
+<p><strong>Send Image Message</strong> - <code>POST /api/messages/messages</code></p>
+<ul>
+<li>Field name: <code>image</code></li>
+<li>Accepts: Image files</li>
+<li>Max size: 10MB</li>
+</ul>
+</li>
+</ol>
+<p><strong>File Upload Format:</strong></p>
+<pre class="hljs"><code><div>Content-Type: multipart/form-data
+</div></code></pre>
+<hr>
+<h2 id="pagination">Pagination</h2>
+<p>Hầu hết các endpoint trả về list đều support pagination:</p>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>page</code> - Trang hiện tại (default: 1)</li>
+<li><code>limit</code> - Số items mỗi trang (default: 20)</li>
+<li><code>offset</code> - Alternative to page (default: 0)</li>
+</ul>
+<p><strong>Response Format:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"data"</span>: [...],
+  <span class="hljs-attr">"pagination"</span>: {
+    <span class="hljs-attr">"currentPage"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"totalPages"</span>: <span class="hljs-number">10</span>,
+    <span class="hljs-attr">"totalItems"</span>: <span class="hljs-number">195</span>,
+    <span class="hljs-attr">"hasMore"</span>: <span class="hljs-literal">true</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h2 id="common-use-cases">Common Use Cases</h2>
+<h3 id="1-user-registration-flow">1. User Registration Flow</h3>
+<pre class="hljs"><code><div>POST /api/auth/register
+  → POST /api/auth/verify-email/:token
+  → POST /api/auth/login
+  → GET /api/users/profile
+</div></code></pre>
+<h3 id="2-create-post-flow">2. Create Post Flow</h3>
+<pre class="hljs"><code><div>POST /api/auth/login
+  → POST /api/posts (with file upload)
+  → GET /api/posts/feed (verify post appears)
+</div></code></pre>
+<h3 id="3-social-interaction-flow">3. Social Interaction Flow</h3>
+<pre class="hljs"><code><div>GET /api/posts/feed
+  → POST /api/posts/:postId/like
+  → POST /api/posts/:postId/comments
+  → POST /api/follow/:userId/follow
+</div></code></pre>
+<h3 id="4-direct-message-flow">4. Direct Message Flow</h3>
+<pre class="hljs"><code><div>GET /api/users/search?q=username
+  → POST /api/messages/conversations (with userId)
+  → POST /api/messages/messages (send message)
+  → Socket.IO: receive 'new_message' event
+</div></code></pre>
+<h3 id="5-explore--discover-flow">5. Explore &amp; Discover Flow</h3>
+<pre class="hljs"><code><div>GET /api/posts/explore
+  → GET /api/posts/:postId
+  → GET /api/users/:userId
+  → POST /api/follow/:userId/follow
+</div></code></pre>
+<hr>
+
+</body>
+</html>
