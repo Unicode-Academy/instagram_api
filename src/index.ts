@@ -31,7 +31,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/static/docs.html");
+  res.sendFile(process.cwd() + "/src/static/docs.html");
 });
 
 // Serve static files from uploads directory
