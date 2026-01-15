@@ -25,7 +25,7 @@ const io = initializeSocket(httpServer);
 app.set("io", io);
 
 // Middleware
-app.use(helmet());
+// app.use(helmet());
 app.use(cors()); // Allow all origins for learning purposes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
