@@ -206,34 +206,40 @@ class CommentController {
   }
 
   /**
-   * Like a comment
+   * Like a comment (toggle)
    */
   async likeComment(req: Request, res: Response) {
     try {
       const { commentId } = req.params;
+      const userId = (req as any).user?.userId || (req as any).userId;
 
-      const comment = await commentService.likeComment(commentId);
+      const comment = await commentService.likeComment(commentId, userId);
 
       if (!comment) {
         return sendError(res, 404, "Comment not found");
       }
 
-      return sendSuccess(res, 200, "Comment liked successfully", {
+      return sendSuccess(res, 200, "Comment liked/unliked successfully", {
         likes: comment.likes,
+        isLiked: (comment as any).isLiked,
       });
     } catch (error: any) {
+      if (error.message === "Comment not found") {
+        return sendError(res, 404, "Comment not found");
+      }
       return sendError(res, 500, error.message);
     }
   }
 
   /**
-   * Unlike a comment
+   * Unlike a comment (with validation)
    */
   async unlikeComment(req: Request, res: Response) {
     try {
       const { commentId } = req.params;
+      const userId = (req as any).user?.userId || (req as any).userId;
 
-      const comment = await commentService.unlikeComment(commentId);
+      const comment = await commentService.unlikeComment(commentId, userId);
 
       if (!comment) {
         return sendError(res, 404, "Comment not found");
@@ -243,6 +249,12 @@ class CommentController {
         likes: comment.likes,
       });
     } catch (error: any) {
+      if (error.message === "Comment not found") {
+        return sendError(res, 404, "Comment not found");
+      }
+      if (error.message === "You have not liked this comment") {
+        return sendError(res, 400, "You have not liked this comment");
+      }
       return sendError(res, 500, error.message);
     }
   }

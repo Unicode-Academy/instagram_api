@@ -117,29 +117,72 @@ class CommentService {
   }
 
   /**
-   * Like a comment
+   * Like a comment (toggle)
    */
-  async likeComment(commentId: string) {
-    const comment = await Comment.findByIdAndUpdate(
-      commentId,
-      { $inc: { likes: 1 } },
-      { new: true }
-    ).populate("userId", "username avatar email");
+  async likeComment(commentId: string, userId: string) {
+    const comment = await Comment.findById(commentId);
 
-    return comment;
+    if (!comment) {
+      throw new Error("Comment not found");
+    }
+
+    const { Types } = require("mongoose");
+    const userIdObj = new Types.ObjectId(userId);
+    const hasLiked = comment.likedBy.some((id) => id.equals(userIdObj));
+
+    if (hasLiked) {
+      // Unlike
+      const updated = await Comment.findByIdAndUpdate(
+        commentId,
+        {
+          $pull: { likedBy: userIdObj },
+          $inc: { likes: -1 },
+        },
+        { new: true }
+      ).populate("userId", "username avatar email");
+      return { ...updated?.toObject(), isLiked: false };
+    } else {
+      // Like
+      const updated = await Comment.findByIdAndUpdate(
+        commentId,
+        {
+          $addToSet: { likedBy: userIdObj },
+          $inc: { likes: 1 },
+        },
+        { new: true }
+      ).populate("userId", "username avatar email");
+      return { ...updated?.toObject(), isLiked: true };
+    }
   }
 
   /**
-   * Unlike a comment
+   * Unlike a comment (with validation)
    */
-  async unlikeComment(commentId: string) {
-    const comment = await Comment.findByIdAndUpdate(
+  async unlikeComment(commentId: string, userId: string) {
+    const comment = await Comment.findById(commentId);
+
+    if (!comment) {
+      throw new Error("Comment not found");
+    }
+
+    const { Types } = require("mongoose");
+    const userIdObj = new Types.ObjectId(userId);
+    const hasLiked = comment.likedBy.some((id) => id.equals(userIdObj));
+
+    if (!hasLiked) {
+      throw new Error("You have not liked this comment");
+    }
+
+    const updated = await Comment.findByIdAndUpdate(
       commentId,
-      { $inc: { likes: -1 } },
+      {
+        $pull: { likedBy: userIdObj },
+        $inc: { likes: -1 },
+      },
       { new: true }
     ).populate("userId", "username avatar email");
 
-    return comment;
+    return updated;
   }
 
   /**

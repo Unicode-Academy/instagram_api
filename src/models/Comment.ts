@@ -6,6 +6,7 @@ export interface IComment extends Document {
   parentCommentId?: mongoose.Types.ObjectId; // For nested replies
   content: string;
   likes: number;
+  likedBy: mongoose.Types.ObjectId[]; // Array of user IDs who liked this comment
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,6 +37,12 @@ const commentSchema = new Schema<IComment>(
       type: Number,
       default: 0,
     },
+    likedBy: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     timestamps: true,
