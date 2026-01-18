@@ -8,6 +8,7 @@ export interface IPost extends Document {
   mediaType: "image" | "video"; // "image" or "video"
   likes: number;
   comments: number;
+  likedBy: mongoose.Types.ObjectId[]; // Array of user IDs who liked this post
   savedBy: mongoose.Types.ObjectId[]; // Array of user IDs who saved this post
   createdAt: Date;
   updatedAt: Date;
@@ -46,6 +47,12 @@ const postSchema = new Schema<IPost>(
       type: Number,
       default: 0,
     },
+    likedBy: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     savedBy: [
       {
         type: Schema.Types.ObjectId,

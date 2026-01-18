@@ -274,37 +274,70 @@ export class PostService {
   }
 
   /**
-   * Like a post
+   * Toggle like a post (like if not liked, unlike if already liked)
    */
-  async likePost(postId: string) {
-    const post = await Post.findByIdAndUpdate(
-      postId,
-      { $inc: { likes: 1 } },
-      { new: true }
-    );
+  async likePost(postId: string, userId: string) {
+    const post = await Post.findById(postId);
 
     if (!post) {
       throw new Error("Post not found");
     }
 
-    return post;
+    const userIdObj = new Types.ObjectId(userId);
+    const hasLiked = post.likedBy.some((id) => id.equals(userIdObj));
+
+    if (hasLiked) {
+      // Unlike
+      const updatedPost = await Post.findByIdAndUpdate(
+        postId,
+        {
+          $pull: { likedBy: userIdObj },
+          $inc: { likes: -1 },
+        },
+        { new: true }
+      );
+      return { ...updatedPost?.toObject(), isLiked: false };
+    } else {
+      // Like
+      const updatedPost = await Post.findByIdAndUpdate(
+        postId,
+        {
+          $addToSet: { likedBy: userIdObj },
+          $inc: { likes: 1 },
+        },
+        { new: true }
+      );
+      return { ...updatedPost?.toObject(), isLiked: true };
+    }
   }
 
   /**
-   * Unlike a post
+   * Unlike a post (check if user has liked before unliking)
    */
-  async unlikePost(postId: string) {
-    const post = await Post.findByIdAndUpdate(
-      postId,
-      { $inc: { likes: -1 } },
-      { new: true }
-    );
+  async unlikePost(postId: string, userId: string) {
+    const post = await Post.findById(postId);
 
     if (!post) {
       throw new Error("Post not found");
     }
 
-    return post;
+    const userIdObj = new Types.ObjectId(userId);
+    const hasLiked = post.likedBy.some((id) => id.equals(userIdObj));
+
+    if (!hasLiked) {
+      throw new Error("You have not liked this post");
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $pull: { likedBy: userIdObj },
+        $inc: { likes: -1 },
+      },
+      { new: true }
+    );
+
+    return updatedPost;
   }
 
   /**
@@ -342,20 +375,29 @@ export class PostService {
   }
 
   /**
-   * Save post (add current user to savedBy)
+   * Save post (add current user to savedBy) - toggle version
    */
   async savePost(postId: string, userId: string) {
-    const post = await Post.findByIdAndUpdate(
-      postId,
-      { $addToSet: { savedBy: new Types.ObjectId(userId) } },
-      { new: true }
-    );
+    const post = await Post.findById(postId);
 
     if (!post) {
       throw new Error("Post not found");
     }
 
-    return post;
+    const userIdObj = new Types.ObjectId(userId);
+    const hasSaved = post.savedBy.some((id) => id.equals(userIdObj));
+
+    if (hasSaved) {
+      throw new Error("Post already saved");
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      { $addToSet: { savedBy: userIdObj } },
+      { new: true }
+    );
+
+    return updatedPost;
   }
 
   /**

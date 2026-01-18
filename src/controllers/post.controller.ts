@@ -329,12 +329,13 @@ export class PostController {
   }
 
   /**
-   * Like a post
+   * Like a post (toggle)
    * POST /api/posts/:postId/like
    */
   async likePost(req: Request, res: Response) {
     try {
       const { postId } = req.params;
+      const userId = (req as any).user?.userId || (req as any).userId;
 
       // Validate postId
       if (!validateObjectId(postId)) {
@@ -343,9 +344,9 @@ export class PostController {
         });
       }
 
-      const post = await postService.likePost(postId);
+      const post = await postService.likePost(postId, userId);
 
-      return sendSuccess(res, 200, "Post liked successfully", post);
+      return sendSuccess(res, 200, "Post liked/unliked successfully", post);
     } catch (error: any) {
       if (error.message === "Post not found") {
         return sendError(res, 404, "Post not found");
@@ -355,12 +356,13 @@ export class PostController {
   }
 
   /**
-   * Unlike a post
+   * Unlike a post (deprecated - use POST /api/posts/:postId/like for toggle)
    * DELETE /api/posts/:postId/like
    */
   async unlikePost(req: Request, res: Response) {
     try {
       const { postId } = req.params;
+      const userId = (req as any).user?.userId || (req as any).userId;
 
       // Validate postId
       if (!validateObjectId(postId)) {
@@ -369,12 +371,15 @@ export class PostController {
         });
       }
 
-      const post = await postService.unlikePost(postId);
+      const post = await postService.unlikePost(postId, userId);
 
       return sendSuccess(res, 200, "Post unliked successfully", post);
     } catch (error: any) {
       if (error.message === "Post not found") {
         return sendError(res, 404, "Post not found");
+      }
+      if (error.message === "You have not liked this post") {
+        return sendError(res, 400, "You have not liked this post");
       }
       return sendError(res, 500, error.message);
     }
@@ -403,6 +408,9 @@ export class PostController {
     } catch (error: any) {
       if (error.message === "Post not found") {
         return sendError(res, 404, "Post not found");
+      }
+      if (error.message === "Post already saved") {
+        return sendError(res, 400, "Post already saved");
       }
       return sendError(res, 500, error.message);
     }

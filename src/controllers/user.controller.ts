@@ -5,6 +5,7 @@ import { deleteFile, getFileUrl } from "../middleware/upload";
 import Post from "../models/Post";
 import { followService } from "../services/follow.service";
 import { userService } from "../services/user.service";
+import { verifyAccessToken } from "../utils/jwt";
 
 export class UserController {
   async getProfile(req: Request, res: Response): Promise<void> {
@@ -105,9 +106,15 @@ export class UserController {
         await followService.getFollowCounts(userId);
 
       // Check if current user is following this user
+      const token = req.headers.authorization?.split(" ")[1];
+      let currentUserId;
+      if (token) {
+        const payload = verifyAccessToken(token);
+        currentUserId = payload?.userId;
+      }
       let isFollowing = false;
-      if (req.user && req.user.userId !== userId) {
-        isFollowing = await followService.isFollowing(req.user.userId, userId);
+      if (currentUserId && currentUserId !== userId) {
+        isFollowing = await followService.isFollowing(currentUserId, userId);
       }
 
       const userWithFollowInfo = {
