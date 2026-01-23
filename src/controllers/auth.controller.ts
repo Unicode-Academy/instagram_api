@@ -60,7 +60,8 @@ export class AuthController {
         password,
         fullName,
         gender,
-        website
+        website,
+        req.get("origin"),
       );
 
       sendSuccess(res, 201, "User registered successfully", {
@@ -189,7 +190,7 @@ export class AuthController {
       await authService.changePassword(
         req.user.userId,
         currentPassword,
-        newPassword
+        newPassword,
       );
 
       sendSuccess(res, 200, "Password changed successfully");
@@ -206,13 +207,13 @@ export class AuthController {
         id,
         email,
         name,
-        picture
+        picture,
       );
 
       // Redirect to frontend with tokens
       const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
       res.redirect(
-        `${frontendUrl}/auth/callback?accessToken=${tokens.accessToken}&refreshToken=${tokens.refreshToken}`
+        `${frontendUrl}/auth/callback?accessToken=${tokens.accessToken}&refreshToken=${tokens.refreshToken}`,
       );
     } catch (error: any) {
       sendError(res, 500, error.message);
@@ -228,7 +229,10 @@ export class AuthController {
         return;
       }
 
-      const message = await authService.forgotPassword(email);
+      const message = await authService.forgotPassword(
+        email,
+        req.get("origin"),
+      );
 
       sendSuccess(res, 200, message);
     } catch (error: any) {
@@ -300,7 +304,10 @@ export class AuthController {
         return;
       }
 
-      const message = await authService.resendVerificationEmail(email);
+      const message = await authService.resendVerificationEmail(
+        email,
+        req.get("origin"),
+      );
 
       sendSuccess(res, 200, message);
     } catch (error: any) {

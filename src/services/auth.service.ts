@@ -19,7 +19,8 @@ export class AuthService {
     password: string,
     fullName?: string,
     gender?: string,
-    website?: string
+    website?: string,
+    baseUrl?: string,
   ): Promise<IUser> {
     const existingUser = await User.findOne({
       $or: [{ email }, { username }],
@@ -51,11 +52,12 @@ export class AuthService {
     await user.save();
 
     // Send verification email
-    const verificationLink = `${process.env.FRONTEND_URL}/verify-email/${verificationToken}`;
+    const frontendUrl = baseUrl || process.env.FRONTEND_URL;
+    const verificationLink = `${frontendUrl}/verify-email/${verificationToken}`;
     await emailService.sendVerificationEmail(
       email,
       verificationToken,
-      verificationLink
+      verificationLink,
     );
 
     return user;
@@ -63,7 +65,7 @@ export class AuthService {
 
   async login(
     email: string,
-    password: string
+    password: string,
   ): Promise<{ user: IUser; tokens: AuthTokens }> {
     const user = await User.findOne({ email });
 
@@ -80,7 +82,7 @@ export class AuthService {
     // Check if email is verified
     if (!user.isVerified) {
       throw new Error(
-        "Please verify your email before logging in. Check your inbox for the verification link."
+        "Please verify your email before logging in. Check your inbox for the verification link.",
       );
     }
 
@@ -127,14 +129,16 @@ export class AuthService {
 
   private async verifyRefreshToken(token: string) {
     const payload = verifyRefreshToken(token);
-    
+
     if (!payload) {
       throw new Error("Invalid refresh token");
     }
 
     // Verify token exists in Redis
-    const storedToken = await redisClient.get(`refresh_token:${payload.userId}`);
-    
+    const storedToken = await redisClient.get(
+      `refresh_token:${payload.userId}`,
+    );
+
     if (!storedToken || storedToken !== token) {
       throw new Error("Refresh token not found or invalid");
     }
@@ -146,7 +150,7 @@ export class AuthService {
     googleId: string,
     email: string,
     fullName: string,
-    profilePicture: string
+    profilePicture: string,
   ): Promise<{ user: IUser; tokens: AuthTokens }> {
     let user = await User.findOne({ googleId });
 
@@ -179,7 +183,7 @@ export class AuthService {
   async changePassword(
     userId: string,
     oldPassword: string,
-    newPassword: string
+    newPassword: string,
   ): Promise<void> {
     const user = await User.findById(userId);
 
@@ -198,7 +202,7 @@ export class AuthService {
     await user.save();
   }
 
-  async forgotPassword(email: string): Promise<string> {
+  async forgotPassword(email: string, baseUrl?: string): Promise<string> {
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -218,7 +222,8 @@ export class AuthService {
     await user.save();
 
     // Send email with reset link
-    const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+    const frontendUrl = baseUrl || process.env.FRONTEND_URL;
+    const resetLink = `${frontendUrl}/reset-password/${resetToken}`;
     await emailService.sendPasswordResetEmail(email, resetToken, resetLink);
 
     return "Password reset link sent to your email";
@@ -278,7 +283,10 @@ export class AuthService {
     await emailService.sendVerificationSuccess(user.email);
   }
 
-  async resendVerificationEmail(email: string): Promise<string> {
+  async resendVerificationEmail(
+    email: string,
+    baseUrl?: string,
+  ): Promise<string> {
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -301,11 +309,12 @@ export class AuthService {
     await user.save();
 
     // Send verification email
-    const verificationLink = `${process.env.FRONTEND_URL}/verify-email/${verificationToken}`;
+    const frontendUrl = baseUrl || process.env.FRONTEND_URL;
+    const verificationLink = `${frontendUrl}/verify-email/${verificationToken}`;
     await emailService.sendVerificationEmail(
       email,
       verificationToken,
-      verificationLink
+      verificationLink,
     );
 
     return "Verification email sent";
