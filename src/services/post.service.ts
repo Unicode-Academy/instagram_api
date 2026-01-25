@@ -51,18 +51,27 @@ export class PostService {
       .lean();
 
     // Add like and save status for current user
-    const currentUserIdStr = currentUserId?.toString();
-    const enrichedPosts = posts.map((post: any) => ({
-      ...post,
-      isLiked: currentUserIdStr
-        ? post.likedBy?.some((id: any) => id.toString() === currentUserIdStr) ||
-          false
-        : false,
-      isSaved: currentUserIdStr
-        ? post.savedBy?.some((id: any) => id.toString() === currentUserIdStr) ||
-          false
-        : false,
-    }));
+    const currentUserIdStr = currentUserId?.toString() || currentUserId;
+
+    const enrichedPosts = posts.map((post: any) => {
+      // Convert all IDs in likedBy and savedBy to strings for comparison
+      const likedByStrs =
+        post.likedBy?.map((id: any) => (id.toString ? id.toString() : id)) ||
+        [];
+      const savedByStrs =
+        post.savedBy?.map((id: any) => (id.toString ? id.toString() : id)) ||
+        [];
+
+      return {
+        ...post,
+        isLiked: currentUserIdStr
+          ? likedByStrs.includes(currentUserIdStr)
+          : false,
+        isSaved: currentUserIdStr
+          ? savedByStrs.includes(currentUserIdStr)
+          : false,
+      };
+    });
 
     return {
       posts: enrichedPosts,
@@ -128,16 +137,23 @@ export class PostService {
     const total = await Post.countDocuments({});
 
     // Add like and save status for current user
-    const userIdStr = userId?.toString();
-    const enrichedPosts = posts.map((post: any) => ({
-      ...post,
-      isLiked: userIdStr
-        ? post.likedBy?.some((id: any) => id.toString() === userIdStr) || false
-        : false,
-      isSaved: userIdStr
-        ? post.savedBy?.some((id: any) => id.toString() === userIdStr) || false
-        : false,
-    }));
+    const userIdStr = userId?.toString() || userId;
+
+    const enrichedPosts = posts.map((post: any) => {
+      // Convert all IDs in likedBy and savedBy to strings for comparison
+      const likedByStrs =
+        post.likedBy?.map((id: any) => (id.toString ? id.toString() : id)) ||
+        [];
+      const savedByStrs =
+        post.savedBy?.map((id: any) => (id.toString ? id.toString() : id)) ||
+        [];
+
+      return {
+        ...post,
+        isLiked: userIdStr ? likedByStrs.includes(userIdStr) : false,
+        isSaved: userIdStr ? savedByStrs.includes(userIdStr) : false,
+      };
+    });
 
     return {
       posts: enrichedPosts,
@@ -219,24 +235,31 @@ export class PostService {
     });
 
     // Add like and save status for current user
-    const userIdStr = userId?.toString();
-    const enrichedPosts = posts.map((post) => ({
-      _id: post._id,
-      image: post.image,
-      video: post.video,
-      mediaType: post.mediaType,
-      likes: post.likes,
-      comments: post.comments,
-      caption: post.caption,
-      createdAt: post.createdAt,
-      userId: post.userInfo,
-      isLiked: userIdStr
-        ? post.likedBy?.some((id: any) => id.toString() === userIdStr) || false
-        : false,
-      isSaved: userIdStr
-        ? post.savedBy?.some((id: any) => id.toString() === userIdStr) || false
-        : false,
-    }));
+    const userIdStr = userId?.toString() || userId;
+
+    const enrichedPosts = posts.map((post) => {
+      // Convert all IDs in likedBy and savedBy to strings for comparison
+      const likedByStrs =
+        post.likedBy?.map((id: any) => (id.toString ? id.toString() : id)) ||
+        [];
+      const savedByStrs =
+        post.savedBy?.map((id: any) => (id.toString ? id.toString() : id)) ||
+        [];
+
+      return {
+        _id: post._id,
+        image: post.image,
+        video: post.video,
+        mediaType: post.mediaType,
+        likes: post.likes,
+        comments: post.comments,
+        caption: post.caption,
+        createdAt: post.createdAt,
+        userId: post.userInfo,
+        isLiked: userIdStr ? likedByStrs.includes(userIdStr) : false,
+        isSaved: userIdStr ? savedByStrs.includes(userIdStr) : false,
+      };
+    });
 
     return {
       posts: enrichedPosts,
