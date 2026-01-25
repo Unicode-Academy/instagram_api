@@ -23,7 +23,7 @@ export class PostController {
       const result = await postService.getNewsfeed(
         parseInt(limit as string) || 20,
         parseInt(offset as string) || 0,
-        userId
+        userId,
       );
 
       return sendSuccess(res, 200, "Newsfeed retrieved successfully", result);
@@ -40,17 +40,19 @@ export class PostController {
   async getExplorePosts(req: Request, res: Response) {
     try {
       const { limit = 20, offset = 0 } = req.query;
+      const userId = (req as any).user?.userId || (req as any).userId;
 
       const result = await postService.getExplorePosts(
         parseInt(limit as string) || 20,
-        parseInt(offset as string) || 0
+        parseInt(offset as string) || 0,
+        userId,
       );
 
       return sendSuccess(
         res,
         200,
         "Explore posts retrieved successfully",
-        result
+        result,
       );
     } catch (error: any) {
       return sendError(res, 500, error.message);
@@ -92,7 +94,7 @@ export class PostController {
         filter as "all" | "video" | "saved",
         currentUserId,
         parseInt(limit as string) || 20,
-        parseInt(offset as string) || 0
+        parseInt(offset as string) || 0,
       );
 
       return sendSuccess(res, 200, "Posts retrieved successfully", result);
@@ -128,7 +130,7 @@ export class PostController {
         res,
         200,
         "Post statistics retrieved successfully",
-        stats
+        stats,
       );
     } catch (error: any) {
       return sendError(res, 500, error.message);
@@ -188,7 +190,7 @@ export class PostController {
         res,
         200,
         "Post details retrieved successfully",
-        postData
+        postData,
       );
     } catch (error: any) {
       return sendError(res, 500, error.message);

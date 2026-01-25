@@ -16,7 +16,7 @@ export class PostService {
     filter: "all" | "video" | "saved" = "all",
     currentUserId?: string,
     limit: number = 20,
-    offset: number = 0
+    offset: number = 0,
   ) {
     // Validate user exists
     const user = await User.findById(userId);
@@ -42,14 +42,30 @@ export class PostService {
 
     // Get paginated posts
     const posts = await Post.find(query)
-      .select("image video mediaType likes comments caption createdAt")
+      .select(
+        "image video mediaType likes comments caption createdAt likedBy savedBy",
+      )
       .sort({ createdAt: -1 })
       .limit(limit)
       .skip(offset)
       .lean();
 
+    // Add like and save status for current user
+    const currentUserIdObj = currentUserId
+      ? new Types.ObjectId(currentUserId)
+      : null;
+    const enrichedPosts = posts.map((post: any) => ({
+      ...post,
+      isLiked: currentUserIdObj
+        ? post.likedBy?.some((id: any) => id.equals(currentUserIdObj)) || false
+        : false,
+      isSaved: currentUserIdObj
+        ? post.savedBy?.some((id: any) => id.equals(currentUserIdObj)) || false
+        : false,
+    }));
+
     return {
-      posts,
+      posts: enrichedPosts,
       total,
       limit,
       offset,
@@ -101,7 +117,9 @@ export class PostService {
     // For now, get all posts (can be enhanced later to filter by followed users)
     const posts = await Post.find({})
       .populate("userId", "username avatar fullname")
-      .select("userId image video mediaType likes comments caption createdAt")
+      .select(
+        "userId image video mediaType likes comments caption createdAt likedBy savedBy",
+      )
       .sort({ createdAt: -1 })
       .limit(limit)
       .skip(offset)
@@ -109,8 +127,20 @@ export class PostService {
 
     const total = await Post.countDocuments({});
 
+    // Add like and save status for current user
+    const userIdObj = userId ? new Types.ObjectId(userId) : null;
+    const enrichedPosts = posts.map((post: any) => ({
+      ...post,
+      isLiked: userIdObj
+        ? post.likedBy?.some((id: any) => id.equals(userIdObj)) || false
+        : false,
+      isSaved: userIdObj
+        ? post.savedBy?.some((id: any) => id.equals(userIdObj)) || false
+        : false,
+    }));
+
     return {
-      posts,
+      posts: enrichedPosts,
       total,
       limit,
       offset,
@@ -121,7 +151,11 @@ export class PostService {
   /**
    * Get explore posts (trending posts with high engagement)
    */
-  async getExplorePosts(limit: number = 20, offset: number = 0) {
+  async getExplorePosts(
+    limit: number = 20,
+    offset: number = 0,
+    userId?: string,
+  ) {
     // Get posts from last 30 days sorted by engagement score
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -170,6 +204,8 @@ export class PostService {
           caption: 1,
           createdAt: 1,
           engagementScore: 1,
+          likedBy: 1,
+          savedBy: 1,
           "userInfo._id": 1,
           "userInfo.username": 1,
           "userInfo.avatar": 1,
@@ -182,18 +218,28 @@ export class PostService {
       createdAt: { $gte: thirtyDaysAgo },
     });
 
+    // Add like and save status for current user
+    const userIdObj = userId ? new Types.ObjectId(userId) : null;
+    const enrichedPosts = posts.map((post) => ({
+      _id: post._id,
+      image: post.image,
+      video: post.video,
+      mediaType: post.mediaType,
+      likes: post.likes,
+      comments: post.comments,
+      caption: post.caption,
+      createdAt: post.createdAt,
+      userId: post.userInfo,
+      isLiked: userIdObj
+        ? post.likedBy?.some((id: any) => id.equals(userIdObj)) || false
+        : false,
+      isSaved: userIdObj
+        ? post.savedBy?.some((id: any) => id.equals(userIdObj)) || false
+        : false,
+    }));
+
     return {
-      posts: posts.map((post) => ({
-        _id: post._id,
-        image: post.image,
-        video: post.video,
-        mediaType: post.mediaType,
-        likes: post.likes,
-        comments: post.comments,
-        caption: post.caption,
-        createdAt: post.createdAt,
-        userId: post.userInfo,
-      })),
+      posts: enrichedPosts,
       total,
       limit,
       offset,
@@ -211,7 +257,7 @@ export class PostService {
       image?: string;
       video?: string;
       mediaType: "image" | "video";
-    }
+    },
   ) {
     // Validate user exists
     const user = await User.findById(userId);
@@ -294,7 +340,7 @@ export class PostService {
           $pull: { likedBy: userIdObj },
           $inc: { likes: -1 },
         },
-        { new: true }
+        { new: true },
       );
       return { ...updatedPost?.toObject(), isLiked: false };
     } else {
@@ -305,7 +351,7 @@ export class PostService {
           $addToSet: { likedBy: userIdObj },
           $inc: { likes: 1 },
         },
-        { new: true }
+        { new: true },
       );
       return { ...updatedPost?.toObject(), isLiked: true };
     }
@@ -334,7 +380,7 @@ export class PostService {
         $pull: { likedBy: userIdObj },
         $inc: { likes: -1 },
       },
-      { new: true }
+      { new: true },
     );
 
     return updatedPost;
@@ -347,7 +393,7 @@ export class PostService {
     const post = await Post.findByIdAndUpdate(
       postId,
       { $inc: { comments: 1 } },
-      { new: true }
+      { new: true },
     );
 
     if (!post) {
@@ -364,7 +410,7 @@ export class PostService {
     const post = await Post.findByIdAndUpdate(
       postId,
       { $inc: { comments: -1 } },
-      { new: true }
+      { new: true },
     );
 
     if (!post) {
@@ -394,7 +440,7 @@ export class PostService {
     const updatedPost = await Post.findByIdAndUpdate(
       postId,
       { $addToSet: { savedBy: userIdObj } },
-      { new: true }
+      { new: true },
     );
 
     return updatedPost;
@@ -407,7 +453,7 @@ export class PostService {
     const post = await Post.findByIdAndUpdate(
       postId,
       { $pull: { savedBy: new Types.ObjectId(userId) } },
-      { new: true }
+      { new: true },
     );
 
     if (!post) {
