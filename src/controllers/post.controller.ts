@@ -18,7 +18,12 @@ export class PostController {
   async getNewsfeed(req: Request, res: Response) {
     try {
       const { limit = 20, offset = 0 } = req.query;
-      const userId = (req as any).user?.userId || (req as any).userId;
+      const token = req.headers.authorization?.split(" ")[1];
+      let userId;
+      if (token) {
+        const payload = verifyAccessToken(token);
+        userId = payload?.userId;
+      }
 
       const result = await postService.getNewsfeed(
         parseInt(limit as string) || 20,
@@ -40,7 +45,12 @@ export class PostController {
   async getExplorePosts(req: Request, res: Response) {
     try {
       const { limit = 20, offset = 0 } = req.query;
-      const userId = (req as any).user?.userId || (req as any).userId;
+      const token = req.headers.authorization?.split(" ")[1];
+      let userId;
+      if (token) {
+        const payload = verifyAccessToken(token);
+        userId = payload?.userId;
+      }
 
       const result = await postService.getExplorePosts(
         parseInt(limit as string) || 20,
@@ -144,6 +154,12 @@ export class PostController {
   async getPostDetails(req: Request, res: Response) {
     try {
       const { postId } = req.params;
+      const token = req.headers.authorization?.split(" ")[1];
+      let userId;
+      if (token) {
+        const payload = verifyAccessToken(token);
+        userId = payload?.userId;
+      }
 
       // Validate postId
       if (!validateObjectId(postId)) {
@@ -180,10 +196,21 @@ export class PostController {
         },
       }));
 
+      // Add isLiked and isSaved status
+      const userIdStr = userId?.toString() || userId;
+      const likedByStrs =
+        post.likedBy?.map((id: any) => (id.toString ? id.toString() : id)) ||
+        [];
+      const savedByStrs =
+        post.savedBy?.map((id: any) => (id.toString ? id.toString() : id)) ||
+        [];
+
       const postData = {
         ...post.toObject(),
         comments: formattedComments,
         totalComments: post.comments,
+        isLiked: userIdStr ? likedByStrs.includes(userIdStr) : false,
+        isSaved: userIdStr ? savedByStrs.includes(userIdStr) : false,
       };
 
       return sendSuccess(
