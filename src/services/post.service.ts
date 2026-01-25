@@ -51,16 +51,16 @@ export class PostService {
       .lean();
 
     // Add like and save status for current user
-    const currentUserIdObj = currentUserId
-      ? new Types.ObjectId(currentUserId)
-      : null;
+    const currentUserIdStr = currentUserId?.toString();
     const enrichedPosts = posts.map((post: any) => ({
       ...post,
-      isLiked: currentUserIdObj
-        ? post.likedBy?.some((id: any) => id.equals(currentUserIdObj)) || false
+      isLiked: currentUserIdStr
+        ? post.likedBy?.some((id: any) => id.toString() === currentUserIdStr) ||
+          false
         : false,
-      isSaved: currentUserIdObj
-        ? post.savedBy?.some((id: any) => id.equals(currentUserIdObj)) || false
+      isSaved: currentUserIdStr
+        ? post.savedBy?.some((id: any) => id.toString() === currentUserIdStr) ||
+          false
         : false,
     }));
 
@@ -128,14 +128,14 @@ export class PostService {
     const total = await Post.countDocuments({});
 
     // Add like and save status for current user
-    const userIdObj = userId ? new Types.ObjectId(userId) : null;
+    const userIdStr = userId?.toString();
     const enrichedPosts = posts.map((post: any) => ({
       ...post,
-      isLiked: userIdObj
-        ? post.likedBy?.some((id: any) => id.equals(userIdObj)) || false
+      isLiked: userIdStr
+        ? post.likedBy?.some((id: any) => id.toString() === userIdStr) || false
         : false,
-      isSaved: userIdObj
-        ? post.savedBy?.some((id: any) => id.equals(userIdObj)) || false
+      isSaved: userIdStr
+        ? post.savedBy?.some((id: any) => id.toString() === userIdStr) || false
         : false,
     }));
 
@@ -219,7 +219,7 @@ export class PostService {
     });
 
     // Add like and save status for current user
-    const userIdObj = userId ? new Types.ObjectId(userId) : null;
+    const userIdStr = userId?.toString();
     const enrichedPosts = posts.map((post) => ({
       _id: post._id,
       image: post.image,
@@ -230,11 +230,11 @@ export class PostService {
       caption: post.caption,
       createdAt: post.createdAt,
       userId: post.userInfo,
-      isLiked: userIdObj
-        ? post.likedBy?.some((id: any) => id.equals(userIdObj)) || false
+      isLiked: userIdStr
+        ? post.likedBy?.some((id: any) => id.toString() === userIdStr) || false
         : false,
-      isSaved: userIdObj
-        ? post.savedBy?.some((id: any) => id.equals(userIdObj)) || false
+      isSaved: userIdStr
+        ? post.savedBy?.some((id: any) => id.toString() === userIdStr) || false
         : false,
     }));
 
