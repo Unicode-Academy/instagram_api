@@ -31,6 +31,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
+  if (req.hostname === "instagram-api.unicode.vn") {
+    return res.sendFile(process.cwd() + "/src/static/docs2.html");
+  }
   res.sendFile(process.cwd() + "/src/static/docs.html");
 });
 
